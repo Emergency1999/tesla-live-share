@@ -99,8 +99,14 @@ export async function handleCallback(): Promise<boolean> {
 	// Decode the ID token to get user info
 	try {
 		const payload = parseJwt(idToken);
+		// Use name claim, or preferred_username, or email prefix, or subject ID as fallback
+		const defaultName = payload.email 
+			? String(payload.email).split('@')[0] 
+			: payload.sub 
+				? `User-${String(payload.sub).slice(0, 8)}` 
+				: 'Unknown User';
 		const userData = {
-			name: String(payload.name || payload.preferred_username || 'Manager'),
+			name: String(payload.name || payload.preferred_username || defaultName),
 			email: payload.email ? String(payload.email) : undefined,
 		};
 		

@@ -55,7 +55,7 @@ export const fetchCarData = internalAction({
       const lastState = data.last_state;
 
       if (!lastState) {
-        console.error("No last_state in Tessie response");
+        console.error(`No last_state in Tessie response for VIN: ${args.vin}. Response keys: ${Object.keys(data).join(", ")}`);
         return;
       }
 
