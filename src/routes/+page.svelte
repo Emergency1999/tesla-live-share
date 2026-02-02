@@ -2,7 +2,12 @@
 	import { useConvexClient, useQuery } from "convex-svelte"
 	import { api } from "$convex/api.js"
 	import { onMount } from "svelte"
-	import Time from "svelte-time/Time.svelte"
+	import CreateLinkForm from "$lib/components/CreateLinkForm.svelte"
+	import EmptyState from "$lib/components/EmptyState.svelte"
+	import ErrorState from "$lib/components/ErrorState.svelte"
+	import LinkCard from "$lib/components/LinkCard.svelte"
+	import LoadingState from "$lib/components/LoadingState.svelte"
+	import PageHeader from "$lib/components/PageHeader.svelte"
 
 	const client = useConvexClient()
 	const links = useQuery(api.links.get, {})
@@ -16,6 +21,30 @@
 		})
 	}
 
+	const handleCreateSubmit = async (event: SubmitEvent) => {
+		event.preventDefault()
+		const form = event.currentTarget as HTMLFormElement | null
+		if (!form) return
+		const formData = new FormData(form)
+		const description = formData.get("description") as string
+		const validMs = parseInt(formData.get("validM") as string) * 60000
+		await createLink(description, validMs)
+		form.reset()
+	}
+
+	const handleCopyLink = (linkShort: string) => {
+		const urlLink = new URL(window.location.href.split("?")[0])
+		urlLink.pathname = "/share"
+		urlLink.searchParams.set("s", linkShort)
+		navigator.clipboard.writeText(urlLink.toString())
+	}
+
+	const handleDeleteLink = async (linkShort: string) => {
+		await client.mutation(api.links.del, {
+			linkShort,
+		})
+	}
+
 	onMount(() => {
 		const interval = setInterval(() => {
 			now = Date.now()
@@ -24,56 +53,26 @@
 	})
 </script>
 
-{#if links.isLoading}
-	Loading...
-{:else if links.error}
-	failed to load: {links.error.toString()}
-{:else}
-	<ul>
-		{#each links.data as link (link._id)}
-			{@const valid = link.endTime > now}
-			<li>
-				{valid ? "☑" : "☐"}
-				<span>{link.description}</span>
-				|
-				<span>
-					{valid ? "valid for" : "expired"}
-					<Time withoutSuffix={valid} relative timestamp={link.endTime} />
-				</span>
-				| <span>last viewed: <Time relative timestamp={link.lastViewed} /></span>
-				| <span>short: {link.linkShort}</span>
-				<button
-					onclick={() => {
-						// copy URL/share?s=linkShort
-						const urlLink = new URL(window.location.href.split("?")[0])
-						urlLink.pathname = "/share"
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 md:p-12">
+	<div class="mx-auto max-w-5xl">
+		<PageHeader />
+		<CreateLinkForm onSubmit={handleCreateSubmit} />
 
-						urlLink.searchParams.set("s", link.linkShort)
-						navigator.clipboard.writeText(urlLink.toString())
-					}}>Copy Link</button
-				>
-				<button
-					onclick={async () => {
-						await client.mutation(api.links.del, {
-							linkShort: link.linkShort,
-						})
-					}}>Delete</button
-				>
-			</li>
-		{/each}
-	</ul>
-{/if}
-
-<!-- Create new Link via form with description and valid time -->
-<form
-	onsubmit={async (e) => {
-		const formData = new FormData(e.target as HTMLFormElement)
-		const description = formData.get("description") as string
-		const validMs = parseInt(formData.get("validM") as string) * 60000
-		await createLink(description, validMs)
-	}}
->
-	<input name="description" placeholder="Description" required />
-	<input name="validM" type="number" placeholder="Valid time (minutes)" required />
-	<button type="submit">Create Link</button>
-</form>
+		<!-- Links List -->
+		<div>
+			{#if links.isLoading}
+				<LoadingState />
+			{:else if links.error}
+				<ErrorState message={links.error.toString()} />
+			{:else if links.data && links.data.length > 0}
+				<div class="space-y-4">
+					{#each links.data as link (link._id)}
+						<LinkCard {link} {now} onCopy={handleCopyLink} onDelete={handleDeleteLink} />
+					{/each}
+				</div>
+			{:else}
+				<EmptyState />
+			{/if}
+		</div>
+	</div>
+</div>

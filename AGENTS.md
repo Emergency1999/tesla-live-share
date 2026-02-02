@@ -22,7 +22,7 @@ You MUST use this tool whenever writing Svelte code before sending it to the use
 Generates a Svelte Playground link with the provided code.
 After completing the code, ask the user if they want a playground link. Only call this tool after user confirmation and NEVER if code was written to files in their project.
 
-### 5. tools
+### 5. svelte-code-writer
 
 For general Svelte or SvelteKit code writing, use TailwindCSS for styling and Skeleton UI components where appropriate.
 When writing Svelte or SvelteKit code, ALWAYS ensure to follow best practices and utilize Skeleton UI components for a consistent design.

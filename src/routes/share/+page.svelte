@@ -10,20 +10,11 @@
 	const client = useConvexClient()
 	const carData = useQuery(api.public.getCarData, { short })
 
-	let now = $state(Date.now())
-
-	let i = $state(10)
-
 	onMount(() => {
+		client.mutation(api.public.touchLink, { short })
 		const interval = setInterval(() => {
-			now = Date.now()
-			if (i >= 10) {
-				i = 0
-				client.mutation(api.public.touchLink, { short })
-			} else {
-				i += 1
-			}
-		}, 1000)
+			client.mutation(api.public.touchLink, { short })
+		}, 10000)
 		return () => clearInterval(interval)
 	})
 </script>
@@ -35,7 +26,7 @@
 {:else}
 	<h2>Car Data</h2>
 	<ul>
-		<li>Timestamp: <Time relative timestamp={carData.data.lastUpdate} /></li>
+		<li>Timestamp: <Time relative live timestamp={carData.data.lastUpdate} /></li>
 		<li>Car Name: {carData.data.carName}</li>
 		<li>Latitude: {carData.data.latitude}</li>
 		<li>Longitude: {carData.data.longitude}</li>
