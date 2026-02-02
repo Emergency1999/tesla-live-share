@@ -24,7 +24,7 @@ export const getCarData = query({
 			throw new Error("Missing VIN")
 		}
 
-		let carRow: Infer<typeof carValidator> | null = await ctx.db
+		const carRow: Infer<typeof carValidator> | null = await ctx.db
 			.query("carData")
 			.withIndex("by_vin", (q) => q.eq("vin", TESLA_VIN))
 			.unique()
@@ -62,11 +62,21 @@ export const touchLink = mutation({
 
 		if (!link || link.endTime < Date.now()) return
 
-		// check if last update was over 9 seconds ago
-		if (Date.now() - (link.lastViewed || 0) < 9000) return
-
 		// update lastViewed timestamp
 		await ctx.db.patch(link._id, { lastViewed: Date.now() })
+
+		const { TESLA_VIN } = process.env
+
+		if (!TESLA_VIN) {
+			throw new Error("Missing VIN")
+		}
+
+		// check if last car update was over 9 seconds ago
+		const carRow: Infer<typeof carValidator> | null = await ctx.db
+			.query("carData")
+			.withIndex("by_vin", (q) => q.eq("vin", TESLA_VIN))
+			.unique()
+		if (carRow && Date.now() - carRow.lastUpdate < 9 * 1000) return
 
 		// schedule car data update (assuming scheduled mutation exists)
 		await ctx.scheduler.runAfter(0, internal.tessie.updateCarData, {})
