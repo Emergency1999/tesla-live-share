@@ -1,3 +1,9 @@
+## [1.1.3](https://github.com/Emergency1999/tesla-live-share/compare/v1.1.2...v1.1.3) (2026-02-02)
+
+### Bug Fixes
+
+- new release script ([8d4649b](https://github.com/Emergency1999/tesla-live-share/commit/8d4649b702b33bde9a67cf85e06057a9dd6adcc2))
+
 ## [1.1.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.1.1...v1.1.2) (2026-02-02)
 
 ### Bug Fixes
