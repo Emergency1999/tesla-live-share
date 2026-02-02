@@ -10,7 +10,8 @@ RUN yarn install --frozen-lockfile
 # Copy source files
 COPY . .
 
-# Build the application
+# Generate Convex types and build the application
+RUN yarn convex codegen
 RUN yarn build
 
 # Production stage
