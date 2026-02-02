@@ -7,6 +7,9 @@ const config = {
 		alias: {
 			$convex: "src/convex/_generated",
 		},
+		version: {
+			name: process.env.npm_package_version,
+		},
 	},
 }
 
