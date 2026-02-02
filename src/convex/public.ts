@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server"
 import { internal } from "./_generated/api"
-import { v } from "convex/values"
+import { v, type Infer } from "convex/values"
+import type { carValidator } from "./schema"
 
 /* PUBLIC: fetch car data (read-only) */
 export const getCarData = query({
@@ -23,11 +24,27 @@ export const getCarData = query({
 			throw new Error("Link invalid or expired")
 		}
 
-		const carRow = await ctx.db
+		let carRow: Infer<typeof carValidator> | null = await ctx.db
 			.query("carData")
 			.withIndex("by_vin", (q) => q.eq("vin", TESLA_VIN))
 			.unique()
-		return carRow || null
+
+		if (!carRow) return undefined
+
+		// only expose certain fields
+		const retData = {
+			latitude: carRow.gpsLatitude,
+			longitude: carRow.gpsLongitude,
+			heading: carRow.gpsHeading,
+			speed: carRow.speed,
+			carName: carRow.carName,
+			activeRouteDestination: carRow.activeRouteDestination,
+			activeRouteLatitude: carRow.activeRouteLatitude,
+			activeRouteLongitude: carRow.activeRouteLongitude,
+			activeRouteMilesToArrival: carRow.activeRouteMilesToArrival,
+			activeRouteMinutesToArrival: carRow.activeRouteMinutesToArrival,
+		}
+		return retData
 	},
 })
 
