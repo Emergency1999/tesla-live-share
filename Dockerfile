@@ -8,10 +8,12 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 # Copy source files
-COPY . .
+COPY tsconfig.json svelte.config.js vite.config.ts ./
+COPY src src
+COPY static static
 
 # Generate Convex types and build the application
-RUN yarn convex codegen
+# RUN yarn convex codegen
 RUN yarn build
 
 # Production stage
@@ -20,8 +22,8 @@ FROM node:22-alpine AS production
 WORKDIR /app
 
 # Copy package files and install production dependencies only
-COPY --from=builder /app/package.json /app/yarn.lock ./
-RUN yarn install --frozen-lockfile --production
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --production && yarn cache clean
 
 # Copy built application
 COPY --from=builder /app/build ./build

@@ -21,7 +21,7 @@
 			"@codedependant/semantic-release-docker",
 			{
 				"dockerImage": "tesla-live-share",
-				"dockerProject": "{{env.DOCKER_REGISTRY_USER}}",
+				"dockerProject": "emergency1999",
 				"dockerTags": ["latest", "{{version}}", "{{major}}-latest", "{{major}}.{{minor}}"]
 			}
 		],
