@@ -1149,6 +1149,11 @@ cssesc@^3.0.0:
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
 
+dayjs@^1.11.13:
+  version "1.11.19"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.19.tgz#15dc98e854bb43917f12021806af897c58ae2938"
+  integrity sha512-t5EcLVS6QPBNqM2z8fakk/NKel+Xzshgt8FFKAn+qwlD1pzZWxh0nVCrvFK7ZDb6XucZeF9z8C7CBWTRIVApAw==
+
 debug@^4.3.1, debug@^4.3.2, debug@^4.4.3:
   version "4.4.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.4.3.tgz#c6ae432d9bd9662582fce08709b038c58e9e3d6a"
@@ -2072,6 +2077,13 @@ svelte-eslint-parser@^1.4.0:
     postcss "^8.4.49"
     postcss-scss "^4.0.9"
     postcss-selector-parser "^7.0.0"
+
+svelte-time@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/svelte-time/-/svelte-time-2.1.0.tgz#44dec67ed77fd8ad78b8152b3996eccddb3cc3ae"
+  integrity sha512-uSCWayqLfbu+L8dQ92SX8fn0+JgllgBvZEcgips8flkmQ0iTzTCIBrW4XokkEqq92CRq4Vbu28pTneFxOBu2FA==
+  dependencies:
+    dayjs "^1.11.13"
 
 svelte@^5.48.2:
   version "5.49.1"

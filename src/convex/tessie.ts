@@ -1,9 +1,9 @@
-import { internalAction, internalMutation, mutation } from "./_generated/server"
+import { internalAction, internalMutation, mutation } from "$convex/server"
 import { z } from "zod"
 
 import { carValidator } from "./schema"
 import { v, type Infer } from "convex/values"
-import { internal } from "./_generated/api"
+import { internal } from "$convex/api"
 
 /* Tessie Zod */
 const TessieStateSchema = z.object({
