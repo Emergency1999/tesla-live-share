@@ -1,3 +1,9 @@
+## [1.1.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.1.1...v1.1.2) (2026-02-02)
+
+### Bug Fixes
+
+- test docker ([aa6a19a](https://github.com/Emergency1999/tesla-live-share/commit/aa6a19a54b8df1465d35a1e3bc7c02f124ece5b2))
+
 ## [1.1.1](https://github.com/Emergency1999/tesla-live-share/compare/v1.1.0...v1.1.1) (2026-02-02)
 
 ### Bug Fixes
