@@ -18,9 +18,11 @@
 			}
 		],
 		[
-			"@semantic-release/exec",
+			"@codedependant/semantic-release-docker",
 			{
-				"publishCmd": "docker build -t $DOCKERHUB_USERNAME/tesla-live-share:${nextRelease.version} -t $DOCKERHUB_USERNAME/tesla-live-share:latest . && docker push $DOCKERHUB_USERNAME/tesla-live-share:${nextRelease.version} && docker push $DOCKERHUB_USERNAME/tesla-live-share:latest"
+				"dockerImage": "tesla-live-share",
+				"dockerProject": "{{env.DOCKER_REGISTRY_USER}}",
+				"dockerTags": ["latest", "{{version}}", "{{major}}-latest", "{{major}}.{{minor}}"]
 			}
 		],
 		"@semantic-release/github"
