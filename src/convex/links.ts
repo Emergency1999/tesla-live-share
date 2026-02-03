@@ -28,7 +28,9 @@ export const add = mutation({
 		endTime: v.number(),
 	},
 	handler: async (ctx, { description, endTime }) => {
-		// manager auth assumed via custom OIDC
+		const user = await ctx.auth.getUserIdentity() // manager auth assumed via custom OIDC
+		if (!user) throw new Error("Not authenticated")
+
 		const linkShort = randomLink()
 
 		// adjust endTime to next full minute
@@ -50,6 +52,9 @@ export const del = mutation({
 		linkShort: v.string(),
 	},
 	handler: async (ctx, { linkShort }) => {
+		const user = await ctx.auth.getUserIdentity() // manager auth assumed via custom OIDC
+		if (!user) throw new Error("Not authenticated")
+
 		const link = await ctx.db
 			.query("links")
 			.withIndex("by_linkShort", (q) => q.eq("linkShort", linkShort))
@@ -65,6 +70,9 @@ export const del = mutation({
 export const get = query({
 	args: {},
 	handler: async (ctx) => {
+		const user = await ctx.auth.getUserIdentity() // manager auth assumed via custom OIDC
+		if (!user) throw new Error("Not authenticated")
+
 		return await ctx.db.query("links").collect()
 	},
 })

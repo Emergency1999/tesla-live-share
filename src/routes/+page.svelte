@@ -8,6 +8,8 @@
 	import LinkCard from "$lib/components/LinkCard.svelte"
 	import LoadingState from "$lib/components/LoadingState.svelte"
 	import PageHeader from "$lib/components/PageHeader.svelte"
+	import { SvelteURL } from "svelte/reactivity"
+	import { env } from "$env/dynamic/public"
 
 	const client = useConvexClient()
 	const links = useQuery(api.links.get, {})
@@ -33,7 +35,7 @@
 	}
 
 	const handleCopyLink = (linkShort: string) => {
-		const urlLink = new URL(window.location.href.split("?")[0])
+		const urlLink = new SvelteURL(window.location.href.split("?")[0])
 		urlLink.pathname = "/share"
 		urlLink.searchParams.set("s", linkShort)
 		navigator.clipboard.writeText(urlLink.toString())
@@ -46,6 +48,24 @@
 	}
 
 	onMount(() => {
+		// Set up authentication with token from localStorage
+		client.setAuth(async () => {
+			return localStorage.getItem("authToken") //TODO fix this stupid code and actually handle token expiration
+		})
+
+		// Check if we have a token, if not redirect to login
+		if (!localStorage.getItem("authToken")) {
+			const authUrl = new SvelteURL(env.PUBLIC_AUTHENTIK_AUTHORIZE_URL || "")
+			authUrl.searchParams.set("client_id", env.PUBLIC_AUTHENTIK_CLIENT_ID || "")
+			authUrl.searchParams.set("redirect_uri", window.location.origin + "/auth/callback")
+			authUrl.searchParams.set("response_type", "id_token")
+			authUrl.searchParams.set("response_mode", "fragment")
+			authUrl.searchParams.set("scope", "openid profile email")
+			authUrl.searchParams.set("nonce", Math.random().toString(36))
+			window.location.href = authUrl.toString()
+			return
+		}
+
 		const interval = setInterval(() => {
 			now = Date.now()
 		}, 1000)
