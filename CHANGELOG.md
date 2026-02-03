@@ -1,3 +1,14 @@
+# [1.2.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.1.2...v1.2.0) (2026-02-03)
+
+### Bug Fixes
+
+- changed to dynamic PUBLIC_CONVEX_URL ([218aff4](https://github.com/Emergency1999/tesla-live-share/commit/218aff46c55414877068532c7709662b939cef72))
+- new release script ([8d4649b](https://github.com/Emergency1999/tesla-live-share/commit/8d4649b702b33bde9a67cf85e06057a9dd6adcc2))
+
+### Features
+
+- added basic JWT auth ([c28e77c](https://github.com/Emergency1999/tesla-live-share/commit/c28e77cd4a2f0596a2a12a5ba6acb16e82fba217))
+
 ## [1.1.3](https://github.com/Emergency1999/tesla-live-share/compare/v1.1.2...v1.1.3) (2026-02-02)
 
 ### Bug Fixes
