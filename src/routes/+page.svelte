@@ -47,14 +47,35 @@
 		})
 	}
 
+	const getAuthToken = async (): Promise<string | null> => {
+		const token = localStorage.getItem("authToken")
+		if (!token) return null
+
+		try {
+			// Decode JWT to check expiration (JWT format: header.payload.signature)
+			const payload = JSON.parse(atob(token.split(".")[1]))
+			const expiresAt = payload.exp * 1000 // Convert to milliseconds
+
+			// Check if token is expired or expires within next 60 seconds
+			if (Date.now() >= expiresAt - 60000) {
+				localStorage.removeItem("authToken")
+				return null
+			}
+
+			return token
+		} catch {
+			// If token is malformed, clear it
+			localStorage.removeItem("authToken")
+			return null
+		}
+	}
+
 	onMount(() => {
 		// Set up authentication with token from localStorage
-		client.setAuth(async () => {
-			return localStorage.getItem("authToken") //TODO fix this stupid code and actually handle token expiration
-		})
+		client.setAuth(getAuthToken)
 
 		// Check if we have a token, if not redirect to login
-		if (!localStorage.getItem("authToken")) {
+		if (!client.getAuth()) {
 			const authUrl = new SvelteURL(env.PUBLIC_AUTHENTIK_AUTHORIZE_URL || "")
 			authUrl.searchParams.set("client_id", env.PUBLIC_AUTHENTIK_CLIENT_ID || "")
 			authUrl.searchParams.set("redirect_uri", window.location.origin + "/auth/callback")
