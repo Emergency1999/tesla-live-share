@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/Emergency1999/tesla-live-share/compare/v1.2.0...v1.2.1) (2026-02-03)
+
+### Bug Fixes
+
+- actually reauthenticate on session end ([f00c714](https://github.com/Emergency1999/tesla-live-share/commit/f00c7147135243a6b8eecf54528ac7c803d0a767))
+
 # [1.2.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.1.2...v1.2.0) (2026-02-03)
 
 ### Bug Fixes
