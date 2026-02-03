@@ -1,3 +1,4 @@
+set -e
 # extract current version from package.json
 VERSION=$(node -p "require('./package.json').version")
 MINOR_VERSION=$(echo $VERSION | cut -d. -f1,2)
