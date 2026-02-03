@@ -7,6 +7,7 @@
 		endTime: number
 		lastViewed?: number
 		linkShort: string
+		isExpired?: boolean
 	}
 
 	const { link, now, onCopy, onDelete } = $props<{
@@ -33,8 +34,8 @@
 			<div class="flex flex-wrap gap-6 text-sm">
 				<div class="text-slate-400">
 					<span class="font-semibold text-slate-300">Status:</span>
-					<span class={`ml-2 font-semibold ${valid ? "text-green-400" : "text-red-400"}`}>
-						{valid ? "Valid" : "Expired"}
+					<span class={`ml-2 font-semibold ${link.isExpired ? "text-red-400" : "text-green-400"}`}>
+						{link.isExpired ? "Expired" : "Valid"}
 					</span>
 				</div>
 				<div class="text-slate-400">

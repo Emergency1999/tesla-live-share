@@ -24,6 +24,7 @@ export default defineSchema({
 		description: v.string(), // manager note
 		endTime: v.number(), // timestamp (ms)
 		lastViewed: v.optional(v.number()), // timestamp (ms)
+		isExpired: v.optional(v.boolean()), // marked expired
 	})
 		.index("by_linkShort", ["linkShort"])
 		.index("by_endTime", ["endTime"]),

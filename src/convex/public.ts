@@ -14,7 +14,7 @@ export const getCarData = query({
 			.withIndex("by_linkShort", (q) => q.eq("linkShort", short))
 			.unique()
 
-		if (!link || link.endTime < Date.now()) {
+		if (!link || link.isExpired || link.endTime < Date.now()) {
 			throw new Error("Link invalid or expired")
 		}
 
@@ -60,10 +60,19 @@ export const touchLink = mutation({
 			.withIndex("by_linkShort", (q) => q.eq("linkShort", short))
 			.unique()
 
-		if (!link || link.endTime < Date.now()) return
+		if (!link) return
+
+		// check if expired and mark it
+		const now = Date.now()
+		if (link.endTime < now) {
+			if (!link.isExpired) {
+				await ctx.db.patch(link._id, { isExpired: true })
+			}
+			return
+		}
 
 		// update lastViewed timestamp
-		await ctx.db.patch(link._id, { lastViewed: Date.now() })
+		await ctx.db.patch(link._id, { lastViewed: now })
 
 		const { TESLA_VIN } = process.env
 

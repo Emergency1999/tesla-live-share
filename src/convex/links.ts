@@ -4,6 +4,23 @@ import { v } from "convex/values"
 /* helpers */
 const randomLink = () => crypto.randomUUID().replace(/-/g, "").slice(0, 32)
 
+/* INTERNAL: mark links as expired when endTime passes */
+export const markExpired = internalMutation({
+	args: {},
+	handler: async (ctx) => {
+		const now = Date.now()
+		const expired = await ctx.db
+			.query("links")
+			.withIndex("by_endTime", (q) => q.lt("endTime", now))
+			.filter((q) => q.or(q.eq(q.field("isExpired"), undefined), q.eq(q.field("isExpired"), false)))
+			.collect()
+
+		for (const link of expired) {
+			await ctx.db.patch(link._id, { isExpired: true })
+		}
+	},
+})
+
 /* INTERNAL: remove expired links */
 export const removeExpired = internalMutation({
 	args: {},
