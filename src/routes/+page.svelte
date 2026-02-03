@@ -2,12 +2,16 @@
 	import { useConvexClient, useQuery } from "convex-svelte"
 	import { api } from "$convex/api.js"
 	import { onMount } from "svelte"
+	// import { authClient } from "$lib/auth-client"
+	// import { useAuth } from "@mmailaender/convex-better-auth-svelte/svelte"
+
 	import CreateLinkForm from "$lib/components/CreateLinkForm.svelte"
 	import EmptyState from "$lib/components/EmptyState.svelte"
 	import ErrorState from "$lib/components/ErrorState.svelte"
 	import LinkCard from "$lib/components/LinkCard.svelte"
 	import LoadingState from "$lib/components/LoadingState.svelte"
 	import PageHeader from "$lib/components/PageHeader.svelte"
+	import { SvelteURL } from "svelte/reactivity"
 
 	const client = useConvexClient()
 	const links = useQuery(api.links.get, {})
@@ -33,7 +37,7 @@
 	}
 
 	const handleCopyLink = (linkShort: string) => {
-		const urlLink = new URL(window.location.href.split("?")[0])
+		const urlLink = new SvelteURL(window.location.href.split("?")[0])
 		urlLink.pathname = "/share"
 		urlLink.searchParams.set("s", linkShort)
 		navigator.clipboard.writeText(urlLink.toString())
