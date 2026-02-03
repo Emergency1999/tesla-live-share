@@ -1,3 +1,9 @@
+## [1.2.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.2.1...v1.2.2) (2026-02-03)
+
+### Bug Fixes
+
+- link expiration ([f99828f](https://github.com/Emergency1999/tesla-live-share/commit/f99828f6ec87033ab57d8f4630fd76d78ae5cf2c))
+
 ## [1.2.1](https://github.com/Emergency1999/tesla-live-share/compare/v1.2.0...v1.2.1) (2026-02-03)
 
 ### Bug Fixes
