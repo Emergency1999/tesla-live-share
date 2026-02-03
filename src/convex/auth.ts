@@ -5,6 +5,7 @@ import type { DataModel } from "$convex/dataModel"
 import { query } from "$convex/server"
 import { betterAuth } from "better-auth/minimal"
 import authConfig from "./auth.config"
+import { genericOAuth } from "better-auth/plugins"
 
 const siteUrl = process.env.SITE_URL!
 
@@ -24,6 +25,17 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
 		plugins: [
 			// The Convex plugin is required for Convex compatibility
 			convex({ authConfig }),
+			genericOAuth({
+				config: [
+					{
+						providerId: "authentik",
+						clientId: process.env.AUTHENTIK_APPLICATION_ID!,
+						clientSecret: process.env.AUTHENTIK_APPLICATION_SECRET!,
+						discoveryUrl: process.env.AUTHENTIK_ISSUER! + ".well-known/openid-configuration",
+					},
+					// Add more providers as needed
+				],
+			}),
 		],
 	})
 }

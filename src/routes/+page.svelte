@@ -2,8 +2,6 @@
 	import { useConvexClient, useQuery } from "convex-svelte"
 	import { api } from "$convex/api.js"
 	import { onMount } from "svelte"
-	// import { authClient } from "$lib/auth-client"
-	// import { useAuth } from "@mmailaender/convex-better-auth-svelte/svelte"
 
 	import CreateLinkForm from "$lib/components/CreateLinkForm.svelte"
 	import EmptyState from "$lib/components/EmptyState.svelte"
@@ -12,6 +10,18 @@
 	import LoadingState from "$lib/components/LoadingState.svelte"
 	import PageHeader from "$lib/components/PageHeader.svelte"
 	import { SvelteURL } from "svelte/reactivity"
+	import { useAuth } from "@mmailaender/convex-better-auth-svelte/svelte"
+	import { authClient } from "$lib/auth-client"
+
+	const auth = useAuth()
+	const isLoading = $derived(auth.isLoading)
+	const isAuthenticated = $derived(auth.isAuthenticated)
+
+	$effect(() => {
+		if (!isLoading && !isAuthenticated) {
+			authClient.signIn.oauth2({ providerId: "authentik" })
+		}
+	})
 
 	const client = useConvexClient()
 	const links = useQuery(api.links.get, {})
