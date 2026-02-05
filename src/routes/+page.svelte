@@ -10,6 +10,7 @@
 	import PageHeader from "$lib/components/PageHeader.svelte"
 	import { SvelteURL } from "svelte/reactivity"
 	import { env } from "$env/dynamic/public"
+	import { shortToLink } from "$lib/links"
 
 	const client = useConvexClient()
 	const links = useQuery(api.links.get, {})
@@ -30,15 +31,14 @@
 		const formData = new FormData(form)
 		const description = formData.get("description") as string
 		const validMs = parseInt(formData.get("validM") as string) * 60000
-		await createLink(description, validMs)
+		const short = await createLink(description, validMs)
+		handleCopyLink(short)
 		form.reset()
 	}
 
 	const handleCopyLink = (linkShort: string) => {
-		const urlLink = new SvelteURL(window.location.href.split("?")[0])
-		urlLink.pathname = "/share"
-		urlLink.searchParams.set("s", linkShort)
-		navigator.clipboard.writeText(urlLink.toString())
+		const urlLink = shortToLink(linkShort)
+		navigator.clipboard.writeText(urlLink)
 	}
 
 	const handleDeleteLink = async (linkShort: string) => {
