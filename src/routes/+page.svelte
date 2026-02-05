@@ -11,17 +11,10 @@
 	import PageHeader from "$lib/components/PageHeader.svelte"
 	import { SvelteURL } from "svelte/reactivity"
 	import { useAuth } from "@mmailaender/convex-better-auth-svelte/svelte"
-	import { authClient } from "$lib/auth-client"
+	import LogoutButton from "$lib/components/LogoutButton.svelte"
+	import LoginState from "$lib/components/LoginState.svelte"
 
 	const auth = useAuth()
-	const isLoading = $derived(auth.isLoading)
-	const isAuthenticated = $derived(auth.isAuthenticated)
-
-	$effect(() => {
-		if (!isLoading && !isAuthenticated) {
-			authClient.signIn.oauth2({ providerId: "authentik" })
-		}
-	})
 
 	const client = useConvexClient()
 	const links = useQuery(api.links.get, {})
@@ -69,24 +62,33 @@
 
 <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 md:p-12">
 	<div class="mx-auto max-w-5xl">
-		<PageHeader />
-		<CreateLinkForm onSubmit={handleCreateSubmit} />
+		{#if auth.isLoading}
+			<LoadingState />
+		{:else if !auth.isLoading && !auth.isAuthenticated}
+			<LoginState />
+		{:else}
+			<div class="mb-6 flex items-start justify-between md:mb-12">
+				<PageHeader />
+				<LogoutButton />
+			</div>
+			<CreateLinkForm onSubmit={handleCreateSubmit} />
 
-		<!-- Links List -->
-		<div>
-			{#if links.isLoading}
-				<LoadingState />
-			{:else if links.error}
-				<ErrorState message={links.error.toString()} />
-			{:else if links.data && links.data.length > 0}
-				<div class="space-y-4">
-					{#each links.data as link (link._id)}
-						<LinkCard {link} {now} onCopy={handleCopyLink} onDelete={handleDeleteLink} />
-					{/each}
-				</div>
-			{:else}
-				<EmptyState />
-			{/if}
-		</div>
+			<!-- Links List -->
+			<div>
+				{#if links.isLoading}
+					<LoadingState />
+				{:else if links.error}
+					<ErrorState message={links.error.toString()} />
+				{:else if links.data && links.data.length > 0}
+					<div class="space-y-4">
+						{#each links.data as link (link._id)}
+							<LinkCard {link} {now} onCopy={handleCopyLink} onDelete={handleDeleteLink} />
+						{/each}
+					</div>
+				{:else}
+					<EmptyState />
+				{/if}
+			</div>
+		{/if}
 	</div>
 </div>
