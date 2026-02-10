@@ -2,6 +2,7 @@
 	import { useConvexClient, useQuery } from "convex-svelte"
 	import { api } from "$convex/api.js"
 	import { onMount } from "svelte"
+
 	import CreateLinkForm from "$lib/components/CreateLinkForm.svelte"
 	import EmptyState from "$lib/components/EmptyState.svelte"
 	import ErrorState from "$lib/components/ErrorState.svelte"
@@ -9,8 +10,11 @@
 	import LoadingState from "$lib/components/LoadingState.svelte"
 	import PageHeader from "$lib/components/PageHeader.svelte"
 	import { SvelteURL } from "svelte/reactivity"
-	import { env } from "$env/dynamic/public"
-	import { shortToLink } from "$lib/links"
+	import { useAuth } from "@mmailaender/convex-better-auth-svelte/svelte"
+	import LogoutButton from "$lib/components/LogoutButton.svelte"
+	import LoginState from "$lib/components/LoginState.svelte"
+
+	const auth = useAuth()
 
 	const client = useConvexClient()
 	const links = useQuery(api.links.get, {})
@@ -37,8 +41,10 @@
 	}
 
 	const handleCopyLink = (linkShort: string) => {
-		const urlLink = shortToLink(linkShort)
-		navigator.clipboard.writeText(urlLink)
+		const urlLink = new SvelteURL(window.location.href.split("?")[0])
+		urlLink.pathname = "/share"
+		urlLink.searchParams.set("s", linkShort)
+		navigator.clipboard.writeText(urlLink.toString())
 	}
 
 	const handleDeleteLink = async (linkShort: string) => {
@@ -96,24 +102,33 @@
 
 <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 md:p-12">
 	<div class="mx-auto max-w-5xl">
-		<PageHeader />
-		<CreateLinkForm onSubmit={handleCreateSubmit} />
+		{#if auth.isLoading}
+			<LoadingState />
+		{:else if !auth.isLoading && !auth.isAuthenticated}
+			<LoginState />
+		{:else}
+			<div class="mb-6 flex items-start justify-between md:mb-12">
+				<PageHeader />
+				<LogoutButton />
+			</div>
+			<CreateLinkForm onSubmit={handleCreateSubmit} />
 
-		<!-- Links List -->
-		<div>
-			{#if links.isLoading}
-				<LoadingState />
-			{:else if links.error}
-				<ErrorState message={links.error.toString()} />
-			{:else if links.data && links.data.length > 0}
-				<div class="space-y-4">
-					{#each links.data as link (link._id)}
-						<LinkCard {link} {now} onCopy={handleCopyLink} onDelete={handleDeleteLink} />
-					{/each}
-				</div>
-			{:else}
-				<EmptyState />
-			{/if}
-		</div>
+			<!-- Links List -->
+			<div>
+				{#if links.isLoading}
+					<LoadingState />
+				{:else if links.error}
+					<ErrorState message={links.error.toString()} />
+				{:else if links.data && links.data.length > 0}
+					<div class="space-y-4">
+						{#each links.data as link (link._id)}
+							<LinkCard {link} {now} onCopy={handleCopyLink} onDelete={handleDeleteLink} />
+						{/each}
+					</div>
+				{:else}
+					<EmptyState />
+				{/if}
+			</div>
+		{/if}
 	</div>
 </div>
