@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.2.2...v1.3.0) (2026-02-10)
+
+### Features
+
+- added better-auth Oauth and client code ([a4623a0](https://github.com/Emergency1999/tesla-live-share/commit/a4623a06f8c3e13125aa819ad577f6534097721c))
+- better auth ([93aac20](https://github.com/Emergency1999/tesla-live-share/commit/93aac20ee3cbf1fd81aec37e13b9106b16e3467b))
+- updated login button ([63e6398](https://github.com/Emergency1999/tesla-live-share/commit/63e6398cab3737d3094788461c4244ab2f9bcc02))
+
 ## [1.2.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.2.1...v1.2.2) (2026-02-03)
 
 ### Bug Fixes
