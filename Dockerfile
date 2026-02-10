@@ -1,11 +1,22 @@
+# Dependencies stage - prepare package.json without version for better caching
+FROM node:22-alpine AS deps
+
+WORKDIR /app
+
+COPY package.json yarn.lock ./
+RUN node -e "const pkg=require('./package.json'); delete pkg.version; require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2));"
+
 # Build stage
 FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies
-COPY package.json yarn.lock ./
+# Install dependencies using version-less package.json
+COPY --from=deps /app/package.json /app/yarn.lock ./
 RUN yarn install --frozen-lockfile
+
+# Copy the full package.json with version
+COPY package.json ./
 
 # Copy source files
 COPY tsconfig.json svelte.config.js vite.config.ts ./
@@ -22,11 +33,14 @@ FROM node:22-alpine AS production
 WORKDIR /app
 
 # Copy package files and install production dependencies only
-COPY package.json yarn.lock ./
+COPY --from=deps /app/package.json /app/yarn.lock ./
 RUN yarn install --frozen-lockfile --production && yarn cache clean
 
 # Copy built application
 COPY --from=builder /app/build ./build
+
+# Copy the full package.json with version
+COPY package.json ./
 
 # Set environment variables
 ENV NODE_ENV=production

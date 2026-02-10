@@ -1,3 +1,26 @@
+## [1.2.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.2.1...v1.2.2) (2026-02-03)
+
+### Bug Fixes
+
+- link expiration ([f99828f](https://github.com/Emergency1999/tesla-live-share/commit/f99828f6ec87033ab57d8f4630fd76d78ae5cf2c))
+
+## [1.2.1](https://github.com/Emergency1999/tesla-live-share/compare/v1.2.0...v1.2.1) (2026-02-03)
+
+### Bug Fixes
+
+- actually reauthenticate on session end ([f00c714](https://github.com/Emergency1999/tesla-live-share/commit/f00c7147135243a6b8eecf54528ac7c803d0a767))
+
+# [1.2.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.1.2...v1.2.0) (2026-02-03)
+
+### Bug Fixes
+
+- changed to dynamic PUBLIC_CONVEX_URL ([218aff4](https://github.com/Emergency1999/tesla-live-share/commit/218aff46c55414877068532c7709662b939cef72))
+- new release script ([8d4649b](https://github.com/Emergency1999/tesla-live-share/commit/8d4649b702b33bde9a67cf85e06057a9dd6adcc2))
+
+### Features
+
+- added basic JWT auth ([c28e77c](https://github.com/Emergency1999/tesla-live-share/commit/c28e77cd4a2f0596a2a12a5ba6acb16e82fba217))
+
 ## [1.1.3](https://github.com/Emergency1999/tesla-live-share/compare/v1.1.2...v1.1.3) (2026-02-02)
 
 ### Bug Fixes
