@@ -3,6 +3,11 @@ import { internal } from "$convex/api"
 import { v, type Infer } from "convex/values"
 import type { carValidator } from "./schema"
 
+function milesToKilometers(miles: number | undefined) {
+	if (miles === undefined) return undefined
+	return miles * 1.609344
+}
+
 /* PUBLIC: fetch car data (read-only) */
 export const getCarData = query({
 	args: {
@@ -42,7 +47,7 @@ export const getCarData = query({
 			activeRouteDestination: carRow.activeRouteDestination,
 			activeRouteLatitude: carRow.activeRouteLatitude,
 			activeRouteLongitude: carRow.activeRouteLongitude,
-			activeRouteMilesToArrival: carRow.activeRouteMilesToArrival,
+			activeRouteKilometersToArrival: milesToKilometers(carRow.activeRouteMilesToArrival),
 			activeRouteMinutesToArrival: carRow.activeRouteMinutesToArrival,
 		}
 		return retData

@@ -7,6 +7,7 @@
 	import { Map, TileLayer, Marker, DivIcon } from "sveaflet"
 	import * as L from "leaflet"
 	import "leaflet/dist/leaflet.css"
+	import { dev } from "$app/environment"
 
 	const short = page.url.searchParams.get("s") || ""
 
@@ -16,8 +17,19 @@
 	let mapInstance: L.Map | undefined = $state(undefined)
 
 	const hasDestination = $derived(
-		carData.data?.activeRouteLatitude != null && carData.data?.activeRouteLongitude != null,
+		carData.data?.activeRouteLatitude !== undefined &&
+			carData.data?.activeRouteLongitude !== undefined,
 	)
+
+	function minutesFloatToTimeString(minutes: number) {
+		const hrs = Math.floor(minutes / 60)
+		const mins = Math.floor(minutes % 60)
+		const sec = Math.floor((minutes * 60) % 60)
+		if (hrs > 0) {
+			return `${hrs}h ${mins}m`
+		}
+		return `${mins}m ${sec}s`
+	}
 
 	// Center map on vehicle, or fit bounds if destination exists
 	$effect(() => {
@@ -38,9 +50,13 @@
 
 	onMount(() => {
 		client.mutation(api.public.touchLink, { short })
-		const interval = setInterval(() => {
-			client.mutation(api.public.touchLink, { short })
-		}, 10000)
+
+		const interval = setInterval(
+			() => {
+				client.mutation(api.public.touchLink, { short })
+			},
+			dev ? 300000 : 10000,
+		)
 		return () => clearInterval(interval)
 	})
 </script>
@@ -139,10 +155,6 @@
 					<span class="text-slate-400">Speed:</span>
 					{carData.data.speed} km/h
 				</p>
-				<p>
-					<span class="text-slate-400">Heading:</span>
-					{carData.data.heading}°
-				</p>
 				{#if hasDestination}
 					<hr class="my-2 border-slate-700" />
 					<p class="font-semibold text-white">
@@ -150,11 +162,11 @@
 					</p>
 					<p>
 						<span class="text-slate-400">Distance:</span>
-						{carData.data.activeRouteMilesToArrival} mi
+						{Math.round((carData.data.activeRouteKilometersToArrival || 0) * 10) / 10} km
 					</p>
 					<p>
 						<span class="text-slate-400">ETA:</span>
-						{carData.data.activeRouteMinutesToArrival} min
+						{minutesFloatToTimeString(carData.data.activeRouteMinutesToArrival || 0)}
 					</p>
 				{/if}
 			</div>
