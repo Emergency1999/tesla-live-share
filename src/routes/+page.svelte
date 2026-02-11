@@ -53,46 +53,7 @@
 		})
 	}
 
-	const getAuthToken = async (): Promise<string | null> => {
-		const token = localStorage.getItem("authToken")
-		if (!token) return null
-
-		try {
-			// Decode JWT to check expiration (JWT format: header.payload.signature)
-			const payload = JSON.parse(atob(token.split(".")[1]))
-			const expiresAt = payload.exp * 1000 // Convert to milliseconds
-
-			// Check if token is expired or expires within next 60 seconds
-			if (Date.now() >= expiresAt - 60000) {
-				localStorage.removeItem("authToken")
-				return null
-			}
-
-			return token
-		} catch {
-			// If token is malformed, clear it
-			localStorage.removeItem("authToken")
-			return null
-		}
-	}
-
 	onMount(() => {
-		// Set up authentication with token from localStorage
-		client.setAuth(getAuthToken)
-
-		// Check if we have a token, if not redirect to login
-		if (!client.getAuth()) {
-			const authUrl = new SvelteURL(env.PUBLIC_AUTHENTIK_AUTHORIZE_URL || "")
-			authUrl.searchParams.set("client_id", env.PUBLIC_AUTHENTIK_CLIENT_ID || "")
-			authUrl.searchParams.set("redirect_uri", window.location.origin + "/auth/callback")
-			authUrl.searchParams.set("response_type", "id_token")
-			authUrl.searchParams.set("response_mode", "fragment")
-			authUrl.searchParams.set("scope", "openid profile email")
-			authUrl.searchParams.set("nonce", Math.random().toString(36))
-			window.location.href = authUrl.toString()
-			return
-		}
-
 		const interval = setInterval(() => {
 			now = Date.now()
 		}, 1000)
@@ -103,7 +64,7 @@
 <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 md:p-12">
 	<div class="mx-auto max-w-5xl">
 		{#if auth.isLoading}
-			<LoadingState />
+			<LoadingState message="Authentifizieren..." />
 		{:else if !auth.isLoading && !auth.isAuthenticated}
 			<LoginState />
 		{:else}
