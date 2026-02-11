@@ -33,7 +33,6 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
 						clientSecret: process.env.AUTHENTIK_APPLICATION_SECRET!,
 						discoveryUrl: process.env.AUTHENTIK_ISSUER! + ".well-known/openid-configuration",
 					},
-					// Add more providers as needed
 				],
 			}),
 		],
