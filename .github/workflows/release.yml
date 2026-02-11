@@ -26,17 +26,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "yarn"
+          cache: "pnpm"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Install dependencies
-        run: yarn add --dev semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/npm @codedependant/semantic-release-docker
+        run: pnpm add --dev semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/npm @codedependant/semantic-release-docker
 
       - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_REGISTRY_USER: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-        run: yarn semantic-release
+        run: pnpm semantic-release
