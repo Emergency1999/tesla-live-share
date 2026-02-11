@@ -1,3 +1,9 @@
+## [1.3.1](https://github.com/Emergency1999/tesla-live-share/compare/v1.3.0...v1.3.1) (2026-02-11)
+
+### Bug Fixes
+
+- fixed better-auth authentification ([22ada75](https://github.com/Emergency1999/tesla-live-share/commit/22ada7548caec79264a7e64926aaa0d43b89a9b7))
+
 # [1.3.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.2.2...v1.3.0) (2026-02-10)
 
 ### Features
