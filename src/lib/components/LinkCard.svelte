@@ -42,12 +42,18 @@
 					<span class="font-semibold text-slate-300">{valid ? "Expires" : "Expired"}:</span>
 					<span class="ml-2">
 						<Time withoutSuffix={valid} relative timestamp={link.endTime} />
+					</span>,
+					<span class="ml-2">
+						<Time timestamp={link.endTime} format="HH:mm · D.MM.YYYY" />
 					</span>
 				</div>
 				<div class="text-slate-400">
 					<span class="font-semibold text-slate-300">Last viewed:</span>
 					<span class="ml-2">
-						<Time relative timestamp={link.lastViewed} />
+						<Time relative timestamp={link.lastViewed} />,
+						<span class="ml-2">
+							<Time timestamp={link.lastViewed} format="HH:mm · D.MM.YYYY" />
+						</span>
 					</span>
 				</div>
 			</div>
