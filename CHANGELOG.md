@@ -1,3 +1,9 @@
+## [1.3.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.3.1...v1.3.2) (2026-02-11)
+
+### Bug Fixes
+
+- replace instead of patch current car data ([78fde5c](https://github.com/Emergency1999/tesla-live-share/commit/78fde5cb986d8fdeb9aed8df3e9302bfc5b525d0))
+
 ## [1.3.1](https://github.com/Emergency1999/tesla-live-share/compare/v1.3.0...v1.3.1) (2026-02-11)
 
 ### Bug Fixes
