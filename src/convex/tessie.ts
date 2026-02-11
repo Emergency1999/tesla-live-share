@@ -1,8 +1,8 @@
-import { internalAction, internalMutation, mutation } from "$convex/server"
+import { internalAction, internalMutation } from "$convex/server"
 import { z } from "zod"
 
 import { carValidator } from "./schema"
-import { v, type Infer } from "convex/values"
+import { type Infer } from "convex/values"
 import { internal } from "$convex/api"
 
 /* Tessie Zod */
@@ -47,7 +47,7 @@ export const setCarData = internalMutation({
 			.withIndex("by_vin", (q) => q.eq("vin", data.vin))
 			.unique()
 		if (carRow) {
-			await ctx.db.patch(carRow._id, data)
+			await ctx.db.replace(carRow._id, data)
 		} else {
 			await ctx.db.insert("carData", data)
 		}
