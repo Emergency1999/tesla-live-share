@@ -1,3 +1,13 @@
+# [1.4.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.3.2...v1.4.0) (2026-02-11)
+
+### Bug Fixes
+
+- fixed time and kilometer view ([94fc4cb](https://github.com/Emergency1999/tesla-live-share/commit/94fc4cb3040f3b1643cd1bf013f424ffdbf678ee))
+
+### Features
+
+- added actual tiles to linkcard ([abb66cd](https://github.com/Emergency1999/tesla-live-share/commit/abb66cd50dc0d88ca8e9e80864c6d59bf2054e49))
+
 ## [1.3.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.3.1...v1.3.2) (2026-02-11)
 
 ### Bug Fixes
