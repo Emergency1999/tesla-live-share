@@ -1,3 +1,9 @@
+## [1.8.1](https://github.com/Emergency1999/tesla-live-share/compare/v1.8.0...v1.8.1) (2026-02-12)
+
+### Bug Fixes
+
+- fixed dependency ([9e37a8b](https://github.com/Emergency1999/tesla-live-share/commit/9e37a8b20b853011ca3c559181d48771f09ca6b5))
+
 # [1.8.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.7.0...v1.8.0) (2026-02-12)
 
 ### Bug Fixes
