@@ -1,3 +1,13 @@
+# [1.8.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.7.0...v1.8.0) (2026-02-12)
+
+### Bug Fixes
+
+- corrected relative arrival time ([f796b3f](https://github.com/Emergency1999/tesla-live-share/commit/f796b3f4be48718d8bf687421abda389724cfe53))
+
+### Features
+
+- added title to pages ([585c1b4](https://github.com/Emergency1999/tesla-live-share/commit/585c1b49fcd22317653f40cd8f55ca0bec761b7f))
+
 # [1.7.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.6.0...v1.7.0) (2026-02-12)
 
 ### Features
