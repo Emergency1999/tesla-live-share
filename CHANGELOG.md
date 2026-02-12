@@ -1,3 +1,9 @@
+# [1.7.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.6.0...v1.7.0) (2026-02-12)
+
+### Features
+
+- showing exact ETA timestamp as well as relative time ([73f8653](https://github.com/Emergency1999/tesla-live-share/commit/73f8653cc50e74af31004c89c291b9192ee05283))
+
 # [1.6.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.5.0...v1.6.0) (2026-02-12)
 
 ### Features
