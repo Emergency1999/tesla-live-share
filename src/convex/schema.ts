@@ -14,6 +14,9 @@ const carValidatorBase = {
 	activeRouteLongitude: v.optional(v.number()),
 	activeRouteMilesToArrival: v.optional(v.number()),
 	activeRouteMinutesToArrival: v.optional(v.number()),
+	batteryLevel: v.number(),
+	insideTemp: v.number(),
+	outsideTemp: v.number(),
 }
 
 export const carValidator = v.object(carValidatorBase)

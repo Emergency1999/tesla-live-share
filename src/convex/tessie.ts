@@ -34,6 +34,13 @@ const TessieStateSchema = z.object({
 			.nullable()
 			.transform((val) => val ?? undefined),
 	}),
+	charge_state: z.object({
+		battery_level: z.number(),
+	}),
+	climate_state: z.object({
+		inside_temp: z.number(),
+		outside_temp: z.number(),
+	}),
 	display_name: z.string(),
 })
 
@@ -95,6 +102,9 @@ export const updateCarData = internalAction({
 			activeRouteLongitude: data.drive_state.active_route_longitude,
 			activeRouteMilesToArrival: data.drive_state.active_route_miles_to_arrival,
 			activeRouteMinutesToArrival: data.drive_state.active_route_minutes_to_arrival,
+			batteryLevel: data.charge_state.battery_level,
+			insideTemp: data.climate_state.inside_temp,
+			outsideTemp: data.climate_state.outside_temp,
 		}
 
 		await ctx.runMutation(internal.tessie.setCarData, {

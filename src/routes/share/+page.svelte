@@ -152,6 +152,14 @@
 					<Time relative live timestamp={carData.data.lastUpdate} />
 				</p>
 				<p>
+					<span class="text-slate-400">Temp:</span>
+					{carData.data.insideTemp}°C ({carData.data.outsideTemp}°C outside)
+				</p>
+				<p>
+					<span class="text-slate-400">Battery:</span>
+					{carData.data.batteryLevel}%
+				</p>
+				<p>
 					<span class="text-slate-400">Speed:</span>
 					{carData.data.speed} km/h
 				</p>

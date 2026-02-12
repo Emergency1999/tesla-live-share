@@ -49,6 +49,9 @@ export const getCarData = query({
 			activeRouteLongitude: carRow.activeRouteLongitude,
 			activeRouteKilometersToArrival: milesToKilometers(carRow.activeRouteMilesToArrival),
 			activeRouteMinutesToArrival: carRow.activeRouteMinutesToArrival,
+			batteryLevel: carRow.batteryLevel,
+			insideTemp: carRow.insideTemp,
+			outsideTemp: carRow.outsideTemp,
 		}
 		return retData
 	},
