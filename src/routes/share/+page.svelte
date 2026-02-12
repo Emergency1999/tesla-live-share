@@ -3,11 +3,11 @@
 	import { useConvexClient, useQuery } from "convex-svelte"
 	import { api } from "$convex/api"
 	import { onMount } from "svelte"
-	import Time from "svelte-time/Time.svelte"
 	import { Map, TileLayer, Marker, DivIcon } from "sveaflet"
 	import * as L from "leaflet"
 	import "leaflet/dist/leaflet.css"
 	import { dev } from "$app/environment"
+	import Time from "svelte-time/Time.svelte"
 
 	const short = page.url.searchParams.get("s") || ""
 
@@ -174,7 +174,11 @@
 					</p>
 					<p>
 						<span class="text-slate-400">ETA:</span>
-						{minutesFloatToTimeString(carData.data.activeRouteMinutesToArrival || 0)}
+						<Time
+							timestamp={Date.now() + (carData.data.activeRouteMinutesToArrival || 0) * 60000}
+							format="HH:mm"
+						/>
+						({minutesFloatToTimeString(carData.data.activeRouteMinutesToArrival || 0)})
 					</p>
 				{/if}
 			</div>
