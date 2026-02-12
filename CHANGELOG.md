@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.4.0...v1.5.0) (2026-02-12)
+
+### Features
+
+- added batteryLevel and temperatures to public view ([6731d11](https://github.com/Emergency1999/tesla-live-share/commit/6731d112d76532813803a86a579e220ec5da9f45))
+- added Date and Time selector for link creation ([f538076](https://github.com/Emergency1999/tesla-live-share/commit/f538076d255341bd5dcbd51322aa8160d6ed58b2))
+
 # [1.4.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.3.2...v1.4.0) (2026-02-11)
 
 ### Bug Fixes
