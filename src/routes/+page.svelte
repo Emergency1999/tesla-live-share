@@ -61,6 +61,10 @@
 	})
 </script>
 
+<svelte:head>
+	<title>Tesla live share</title>
+</svelte:head>
+
 <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 md:p-12">
 	<div class="mx-auto max-w-5xl">
 		{#if auth.isLoading}

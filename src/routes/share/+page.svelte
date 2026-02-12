@@ -8,6 +8,7 @@
 	import "leaflet/dist/leaflet.css"
 	import { dev } from "$app/environment"
 	import Time from "svelte-time/Time.svelte"
+	import dayjs from "dayjs"
 
 	const short = page.url.searchParams.get("s") || ""
 
@@ -49,9 +50,21 @@
 		)
 		return () => clearInterval(interval)
 	})
+
+	let head = $derived.by(() => {
+		let text = "Tesla live share"
+		if (carData.data) {
+			text = `${carData.data.carName} - ${text}`
+			if (carData.data.activeRouteLatitude !== undefined) {
+				text = `ETA ${dayjs(carData.data.lastUpdate + carData.data.activeRouteMinutesToArrival! * 60000).format("HH:mm")} - ${text}`
+			}
+		}
+		return text
+	})
 </script>
 
 <svelte:head>
+	<title>{head}</title>
 	<link
 		rel="stylesheet"
 		href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
