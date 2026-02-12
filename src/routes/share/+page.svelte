@@ -21,16 +21,6 @@
 			carData.data?.activeRouteLongitude !== undefined,
 	)
 
-	function minutesFloatToTimeString(minutes: number) {
-		const hrs = Math.floor(minutes / 60)
-		const mins = Math.floor(minutes % 60)
-		const sec = Math.floor((minutes * 60) % 60)
-		if (hrs > 0) {
-			return `${hrs}h ${mins}m`
-		}
-		return `${mins}m ${sec}s`
-	}
-
 	// Center map on vehicle, or fit bounds if destination exists
 	$effect(() => {
 		if (!mapInstance || !carData.data) return
@@ -175,10 +165,15 @@
 					<p>
 						<span class="text-slate-400">ETA:</span>
 						<Time
-							timestamp={Date.now() + (carData.data.activeRouteMinutesToArrival || 0) * 60000}
+							timestamp={carData.data.lastUpdate +
+								(carData.data.activeRouteMinutesToArrival || 0) * 60000}
 							format="HH:mm"
+						/>,
+						<Time
+							timestamp={carData.data.lastUpdate +
+								(carData.data.activeRouteMinutesToArrival || 0) * 60000}
+							relative
 						/>
-						({minutesFloatToTimeString(carData.data.activeRouteMinutesToArrival || 0)})
 					</p>
 				{/if}
 			</div>
