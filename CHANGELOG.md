@@ -1,3 +1,9 @@
+# [1.6.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.5.0...v1.6.0) (2026-02-12)
+
+### Features
+
+- added custom favicon ([24f5464](https://github.com/Emergency1999/tesla-live-share/commit/24f54640767cef2a05b2756a26fdbd10b70ee9f8))
+
 # [1.5.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.4.0...v1.5.0) (2026-02-12)
 
 ### Features
