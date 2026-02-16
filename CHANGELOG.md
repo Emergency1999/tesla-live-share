@@ -1,3 +1,25 @@
+## [1.8.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.8.1...v1.8.2) (2026-02-16)
+
+### Bug Fixes
+
+- added convex urls ([5983c6a](https://github.com/Emergency1999/tesla-live-share/commit/5983c6aa8bdafd0f5b603204dbc3ea37bdc4751e))
+- added convex.json ([e7f6904](https://github.com/Emergency1999/tesla-live-share/commit/e7f6904e09abe4a2c89ec42465ce68a6ac641c4b))
+- added docker caching ([dea0edb](https://github.com/Emergency1999/tesla-live-share/commit/dea0edb9c280df2a95b3a1453fa26ee519c1b2d5))
+- arg is needed ([d07d01c](https://github.com/Emergency1999/tesla-live-share/commit/d07d01c707cabaa30ec4304a2d46103edfe8746c))
+- arg order ([7ed4ad2](https://github.com/Emergency1999/tesla-live-share/commit/7ed4ad2341c6fbb0b48e2ef41f12fb35f32e1fce))
+- convex Token ([56b0483](https://github.com/Emergency1999/tesla-live-share/commit/56b0483087f2f09a7622cd1ebfeabb1a1d7adc36))
+- docker image name ([00552e1](https://github.com/Emergency1999/tesla-live-share/commit/00552e110cc59f58ee19d9957a29437634cfcb84))
+- env ([47e030a](https://github.com/Emergency1999/tesla-live-share/commit/47e030ab17b97f5b402ce5b4e6dc7358e08c567e))
+- env variables ([c70a343](https://github.com/Emergency1999/tesla-live-share/commit/c70a3438f22378b68f491d5139d6a7194abffb3e))
+- quoting ([d905a87](https://github.com/Emergency1999/tesla-live-share/commit/d905a874cc1523eb5c8dab6260344520a7378d83))
+- release docker build ([bf93fa8](https://github.com/Emergency1999/tesla-live-share/commit/bf93fa8657e32dbf34547e796db4fba574ba43b4))
+- removed buildx ([206ac13](https://github.com/Emergency1999/tesla-live-share/commit/206ac1394c261b615abccd75ca2990cde4da2dce))
+- test ([073e5a3](https://github.com/Emergency1999/tesla-live-share/commit/073e5a3a275e04eaa329f3babcc5cf4bd0111962))
+- test ([4b30183](https://github.com/Emergency1999/tesla-live-share/commit/4b301838ce1566e69f7ea5120cdd37af60fcee68))
+- tippfehler ([b670819](https://github.com/Emergency1999/tesla-live-share/commit/b6708199a3e63861fbe175973f79ea406a9f208e))
+- updated build step ([5bb3859](https://github.com/Emergency1999/tesla-live-share/commit/5bb38597ed95184f9b3436037e8ffd1865489a17))
+- warning ([d53bdb3](https://github.com/Emergency1999/tesla-live-share/commit/d53bdb339ed9ef899d9eb50f03531586650ea9ec))
+
 ## [1.8.2-develop.3](https://github.com/Emergency1999/tesla-live-share/compare/v1.8.2-develop.2...v1.8.2-develop.3) (2026-02-16)
 
 ### Bug Fixes
