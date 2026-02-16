@@ -27,7 +27,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY package.json ./
 
 # Copy source files
-COPY tsconfig.json svelte.config.js vite.config.ts ./
+COPY tsconfig.json svelte.config.js vite.config.ts convex.json ./
 COPY src src
 COPY static static
 
