@@ -34,13 +34,13 @@ jobs:
           node-version: 22
           cache: "pnpm"
 
-      - name: Build docker image
-        run: |
-          docker build \
-            --build-arg CONVEX_DEPLOY_KEY="${{ secrets.CONVEX_TOKEN }}" \
-            --build-arg PUBLIC_CONVEX_URL="${{ secrets.PUBLIC_CONVEX_URL }}" \
-            --build-arg PUBLIC_CONVEX_SITE_URL="${{ secrets.PUBLIC_CONVEX_SITE_URL }}" \
-            -t "${{ secrets.DOCKERHUB_USERNAME }}/tesla-live-share:latest" .
+      # - name: Build docker image
+      #   run: |
+      #     docker build \
+      #       --build-arg CONVEX_DEPLOY_KEY="${{ secrets.CONVEX_TOKEN }}" \
+      #       --build-arg PUBLIC_CONVEX_URL="${{ secrets.PUBLIC_CONVEX_URL }}" \
+      #       --build-arg PUBLIC_CONVEX_SITE_URL="${{ secrets.PUBLIC_CONVEX_SITE_URL }}" \
+      #       -t "${{ secrets.DOCKERHUB_USERNAME }}/tesla-live-share:latest" .
 
       - name: Install dependencies
         run: pnpm install
@@ -50,4 +50,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_REGISTRY_USER: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_TOKEN }}
+          PUBLIC_CONVEX_URL: ${{ secrets.PUBLIC_CONVEX_URL }}
+          PUBLIC_CONVEX_SITE_URL: ${{ secrets.PUBLIC_CONVEX_SITE_URL }}
         run: pnpm semantic-release

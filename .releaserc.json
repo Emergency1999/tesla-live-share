@@ -19,7 +19,12 @@
 		[
 			"@codedependant/semantic-release-docker",
 			{
-				"dockerImage": "tesla-live-share"
+				"dockerImage": "tesla-live-share",
+				"dockerArgs": {
+					"CONVEX_DEPLOY_KEY": "$CONVEX_DEPLOY_KEY",
+					"PUBLIC_CONVEX_URL": "$PUBLIC_CONVEX_URL",
+					"PUBLIC_CONVEX_SITE_URL": "$PUBLIC_CONVEX_SITE_URL"
+				}
 			}
 		],
 		[
