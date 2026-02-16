@@ -32,9 +32,8 @@ COPY src src
 COPY static static
 
 # Accept build arguments for public environment variables
-ARG PUBLIC_CONVEX_URL
-ARG PUBLIC_CONVEX_SITE_URL
-ARG CONVEX_DEPLOY_KEY
+# ARG PUBLIC_CONVEX_URL
+# ARG PUBLIC_CONVEX_SITE_URL
 
 # Set as environment variables for the build process
 # ENV PUBLIC_CONVEX_URL=$PUBLIC_CONVEX_URL
