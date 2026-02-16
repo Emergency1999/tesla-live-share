@@ -1,3 +1,9 @@
+## [1.8.2-develop.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.8.2-develop.1...v1.8.2-develop.2) (2026-02-16)
+
+### Bug Fixes
+
+- docker image name ([00552e1](https://github.com/Emergency1999/tesla-live-share/commit/00552e110cc59f58ee19d9957a29437634cfcb84))
+
 ## [1.8.2-develop.1](https://github.com/Emergency1999/tesla-live-share/compare/v1.8.1...v1.8.2-develop.1) (2026-02-16)
 
 ### Bug Fixes
