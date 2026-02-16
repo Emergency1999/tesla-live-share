@@ -36,9 +36,11 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build --build-arg CONVEX_DEPLOY_KEY="${{ secrets.CONVEX_TOKEN }}" -t "${{ secrets.DOCKERHUB_USERNAME }}/tesla-live-share:latest" .
-        # env:
-        #   CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_TOKEN }}
+          docker build \
+            --build-arg CONVEX_DEPLOY_KEY="${{ secrets.CONVEX_TOKEN }}" \
+            --build-arg PUBLIC_CONVEX_URL="${{ secrets.PUBLIC_CONVEX_URL }}" \
+            --build-arg PUBLIC_CONVEX_SITE_URL="${{ secrets.PUBLIC_CONVEX_SITE_URL }}" \
+            -t "${{ secrets.DOCKERHUB_USERNAME }}/tesla-live-share:latest" .
 
       - name: Install dependencies
         run: pnpm install
