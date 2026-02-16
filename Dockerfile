@@ -27,20 +27,22 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY package.json ./
 
 # Copy source files
-COPY tsconfig.json svelte.config.js vite.config.ts ./
+COPY tsconfig.json svelte.config.js vite.config.ts convex.json ./
 COPY src src
 COPY static static
 
 # Accept build arguments for public environment variables
 ARG PUBLIC_CONVEX_URL
 ARG PUBLIC_CONVEX_SITE_URL
+ARG CONVEX_DEPLOY_KEY
 
 # Set as environment variables for the build process
-ENV PUBLIC_CONVEX_URL=$PUBLIC_CONVEX_URL
-ENV PUBLIC_CONVEX_SITE_URL=$PUBLIC_CONVEX_SITE_URL
+# ENV PUBLIC_CONVEX_URL=$PUBLIC_CONVEX_URL
+# ENV PUBLIC_CONVEX_SITE_URL=$PUBLIC_CONVEX_SITE_URL
 
 # Generate Convex types and build the application
-# RUN pnpm convex codegen
+RUN pnpm svelte-kit sync
+RUN pnpm convex codegen
 RUN pnpm run build
 
 # Production stage
