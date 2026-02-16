@@ -19,7 +19,7 @@
 		[
 			"@codedependant/semantic-release-docker",
 			{
-				"dockerImage": "tesla-live-share",
+				"dockerImage": "emergency1999/tesla-live-share",
 				"dockerTags": [
 					"{{#if prerelease.[0]}}{{prerelease.[0]}}{{else}}latest{{/if}}",
 					"{{major}}-{{#if prerelease.[0]}}{{prerelease.[0]}}{{else}}latest{{/if}}",
