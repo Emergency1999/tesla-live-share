@@ -1,3 +1,9 @@
+## [1.8.2-develop.3](https://github.com/Emergency1999/tesla-live-share/compare/v1.8.2-develop.2...v1.8.2-develop.3) (2026-02-16)
+
+### Bug Fixes
+
+- added docker caching ([dea0edb](https://github.com/Emergency1999/tesla-live-share/commit/dea0edb9c280df2a95b3a1453fa26ee519c1b2d5))
+
 ## [1.8.2-develop.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.8.2-develop.1...v1.8.2-develop.2) (2026-02-16)
 
 ### Bug Fixes
