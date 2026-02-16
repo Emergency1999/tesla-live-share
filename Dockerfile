@@ -41,7 +41,7 @@ ARG CONVEX_DEPLOY_KEY
 # ENV PUBLIC_CONVEX_SITE_URL=$PUBLIC_CONVEX_SITE_URL
 
 # Generate Convex types and build the application
-RUN pnpb svelte-kit sync
+RUN pnpm svelte-kit sync
 RUN pnpm convex codegen
 RUN pnpm run build
 
