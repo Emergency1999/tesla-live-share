@@ -40,7 +40,7 @@ ENV PUBLIC_CONVEX_URL=$PUBLIC_CONVEX_URL
 ENV PUBLIC_CONVEX_SITE_URL=$PUBLIC_CONVEX_SITE_URL
 
 # Generate Convex types and build the application
-# RUN pnpm convex codegen
+RUN pnpm convex codegen
 RUN pnpm run build
 
 # Production stage
