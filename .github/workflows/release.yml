@@ -36,7 +36,7 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build --build-arg CONVEX_DEPLOY_KEY=${{ secrets.CONVEX_TOKEN }} -t ${{ secrets.DOCKERHUB_USERNAME }}/tesla-live-share:latest .
+          docker build --build-arg CONVEX_DEPLOY_KEY="${{ secrets.CONVEX_TOKEN }}" -t "${{ secrets.DOCKERHUB_USERNAME }}/tesla-live-share:latest" .
         # env:
         #   CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_TOKEN }}
 
