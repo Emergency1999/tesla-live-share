@@ -155,6 +155,10 @@
 					<Time relative live timestamp={carData.data.lastUpdate} />
 				</p>
 				<p>
+					<span class="text-slate-400">State:</span>
+					{carData.data.state}
+				</p>
+				<p>
 					<span class="text-slate-400">Temp:</span>
 					{carData.data.insideTemp}°C ({carData.data.outsideTemp}°C outside)
 				</p>
@@ -188,6 +192,37 @@
 							relative
 						/>
 					</p>
+				{/if}
+				{#if carData.data.hasUnlockRights}
+					<p>
+						{carData.data.locked ? "🔒 Vehicle is locked" : "🔓 Vehicle is unlocked"}
+					</p>
+					<button
+						onclick={async () => {
+							await client.mutation(api.public.carAction, {
+								short,
+								action: carData.data!.locked ? "unlock" : "lock",
+							})
+							await client.mutation(api.public.touchLink, { short })
+						}}
+						class="rounded bg-blue-600 px-3 py-1 text-sm font-semibold text-white shadow transition-colors hover:bg-blue-700"
+					>
+						{carData.data.locked ? "Unlock" : "Lock"} Vehicle
+					</button>
+				{/if}
+				{#if carData.data.hasStartRights && !carData.data.locked}
+					<button
+						onclick={async () => {
+							await client.mutation(api.public.carAction, {
+								short,
+								action: "remote_start",
+							})
+							await client.mutation(api.public.touchLink, { short })
+						}}
+						class="rounded bg-blue-600 px-3 py-1 text-sm font-semibold text-white shadow transition-colors hover:bg-blue-700"
+					>
+						Remote Start Vehicle
+					</button>
 				{/if}
 			</div>
 		</div>

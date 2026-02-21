@@ -21,10 +21,17 @@
 
 	let now = $state(Date.now())
 
-	const createLink = (description: string, validMs: number) => {
+	const createLink = (
+		description: string,
+		validMs: number,
+		hasUnlockRights: boolean,
+		hasStartRights: boolean,
+	) => {
 		return client.mutation(api.links.add, {
 			description,
 			endTime: Date.now() + validMs,
+			hasUnlockRights,
+			hasStartRights,
 		})
 	}
 
@@ -35,7 +42,10 @@
 		const formData = new FormData(form)
 		const description = formData.get("description") as string
 		const validMs = parseInt(formData.get("validM") as string) * 60000
-		const short = await createLink(description, validMs)
+		const rights = ((formData.get("rights") as string) ?? "view") as "view" | "open" | "start"
+		const hasUnlockRights = rights === "open" || rights === "start"
+		const hasStartRights = rights === "start"
+		const short = await createLink(description, validMs, hasUnlockRights, hasStartRights)
 		handleCopyLink(short)
 		form.reset()
 	}
@@ -53,12 +63,20 @@
 		})
 	}
 
-	const handleEditLink = async (linkShort: string, description: string, endTime: number) => {
+	const handleEditLink = async (
+		linkShort: string,
+		description: string,
+		endTime: number,
+		hasUnlockRights: boolean,
+		hasStartRights: boolean,
+	) => {
 		await client.mutation(api.links.edit, {
 			linkShort,
 			description,
 			endTime,
 			expired: endTime <= Date.now(),
+			hasUnlockRights,
+			hasStartRights,
 		})
 	}
 

@@ -8,6 +8,8 @@
 		lastViewed?: number
 		linkShort: string
 		isExpired?: boolean
+		hasUnlockRights?: boolean
+		hasStartRights?: boolean
 	}
 
 	const { link, now, onCopy, onDelete, onEdit } = $props<{
@@ -15,16 +17,45 @@
 		now: number
 		onCopy: (linkShort: string) => void
 		onDelete: (linkShort: string) => void | Promise<void>
-		onEdit: (linkShort: string, description: string, endTime: number) => void | Promise<void>
+		onEdit: (
+			linkShort: string,
+			description: string,
+			endTime: number,
+			hasUnlockRights: boolean,
+			hasStartRights: boolean,
+		) => void | Promise<void>
 	}>()
 
 	const valid = $derived(link.endTime > now)
+	type RightsLevel = "view" | "open" | "start"
+
+	function toRightsLevel(hasUnlockRights?: boolean, hasStartRights?: boolean): RightsLevel {
+		if (hasStartRights) return "start"
+		if (hasUnlockRights) return "open"
+		return "view"
+	}
+
+	function fromRightsLevel(level: RightsLevel) {
+		return {
+			hasUnlockRights: level === "open" || level === "start",
+			hasStartRights: level === "start",
+		}
+	}
+
+	function formatRightsLevel(level: RightsLevel) {
+		if (level === "start") return "Start"
+		if (level === "open") return "Open"
+		return "View"
+	}
+
+	const linkRights = $derived(toRightsLevel(link.hasUnlockRights, link.hasStartRights))
 
 	let isEditing = $state(false)
 	let isSaving = $state(false)
 	let editError = $state("")
 	let editDescription = $state("")
 	let editDateTime = $state("")
+	let editRights = $state<RightsLevel>("view")
 
 	function formatDateTimeLocal(timestamp: number) {
 		const date = new Date(timestamp)
@@ -35,6 +66,7 @@
 	function openEdit() {
 		editDescription = link.description
 		editDateTime = formatDateTimeLocal(link.endTime)
+		editRights = toRightsLevel(link.hasUnlockRights, link.hasStartRights)
 		editError = ""
 		isEditing = true
 	}
@@ -61,7 +93,8 @@
 		editError = ""
 
 		try {
-			await onEdit(link.linkShort, description, endTime)
+			const { hasUnlockRights, hasStartRights } = fromRightsLevel(editRights)
+			await onEdit(link.linkShort, description, endTime, hasUnlockRights, hasStartRights)
 			isEditing = false
 		} catch (error) {
 			editError = error instanceof Error ? error.message : "Failed to save changes"
@@ -107,6 +140,10 @@
 						</span>
 					</span>
 				</div>
+				<div class="text-slate-400">
+					<span class="font-semibold text-slate-300">Rights:</span>
+					<span class="ml-2">{formatRightsLevel(linkRights)}</span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -132,6 +169,38 @@
 				required
 				class="rounded-lg border border-slate-600 bg-slate-700 px-4 py-2 text-white [color-scheme:dark] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
 			/>
+			<div class="md:col-span-2">
+				<p class="mb-2 text-sm font-semibold text-slate-300">Rights</p>
+				<div class="inline-flex rounded-lg border border-slate-600 bg-slate-700 p-1">
+					<button
+						type="button"
+						onclick={() => (editRights = "view")}
+						class="rounded-md px-4 py-2 text-sm font-medium transition-all {editRights === 'view'
+							? 'bg-blue-600 text-white shadow-sm'
+							: 'text-slate-300 hover:text-white'}"
+					>
+						View
+					</button>
+					<button
+						type="button"
+						onclick={() => (editRights = "open")}
+						class="rounded-md px-4 py-2 text-sm font-medium transition-all {editRights === 'open'
+							? 'bg-blue-600 text-white shadow-sm'
+							: 'text-slate-300 hover:text-white'}"
+					>
+						Open
+					</button>
+					<button
+						type="button"
+						onclick={() => (editRights = "start")}
+						class="rounded-md px-4 py-2 text-sm font-medium transition-all {editRights === 'start'
+							? 'bg-blue-600 text-white shadow-sm'
+							: 'text-slate-300 hover:text-white'}"
+					>
+						Start
+					</button>
+				</div>
+			</div>
 			{#if editError}
 				<p class="text-sm text-red-400 md:col-span-2">{editError}</p>
 			{/if}

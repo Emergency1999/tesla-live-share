@@ -4,6 +4,8 @@ import { v } from "convex/values"
 const carValidatorBase = {
 	vin: v.string(),
 	carName: v.string(),
+	state: v.string(),
+	locked: v.boolean(),
 	lastUpdate: v.number(), // timestamp (ms)
 	gpsLatitude: v.number(),
 	gpsLongitude: v.number(),
@@ -28,6 +30,8 @@ export default defineSchema({
 		endTime: v.number(), // timestamp (ms)
 		lastViewed: v.optional(v.number()), // timestamp (ms)
 		isExpired: v.optional(v.boolean()), // marked expired
+		hasUnlockRights: v.optional(v.boolean()), // has ever been used to unlock a car
+		hasStartRights: v.optional(v.boolean()), // has ever been used to start a car
 	})
 		.index("by_linkShort", ["linkShort"])
 		.index("by_endTime", ["endTime"]),

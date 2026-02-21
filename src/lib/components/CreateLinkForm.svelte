@@ -128,5 +128,35 @@
 		>
 			{submitLabel}
 		</button>
+
+		<fieldset class="md:col-span-3">
+			<legend class="mb-2 text-sm font-semibold text-slate-300">Rights</legend>
+			<div class="inline-flex rounded-lg border border-slate-600 bg-slate-700 p-1">
+				<label>
+					<input class="peer sr-only" type="radio" name="rights" value="view" checked />
+					<span
+						class="inline-flex min-w-20 items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-slate-300 transition-all peer-checked:bg-blue-600 peer-checked:text-white"
+					>
+						View
+					</span>
+				</label>
+				<label>
+					<input class="peer sr-only" type="radio" name="rights" value="open" />
+					<span
+						class="inline-flex min-w-20 items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-slate-300 transition-all peer-checked:bg-blue-600 peer-checked:text-white"
+					>
+						Open
+					</span>
+				</label>
+				<label>
+					<input class="peer sr-only" type="radio" name="rights" value="start" />
+					<span
+						class="inline-flex min-w-20 items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-slate-300 transition-all peer-checked:bg-blue-600 peer-checked:text-white"
+					>
+						Start
+					</span>
+				</label>
+			</div>
+		</fieldset>
 	</form>
 </div>

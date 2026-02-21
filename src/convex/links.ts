@@ -43,8 +43,10 @@ export const add = mutation({
 	args: {
 		description: v.string(),
 		endTime: v.number(),
+		hasUnlockRights: v.boolean(),
+		hasStartRights: v.boolean(),
 	},
-	handler: async (ctx, { description, endTime }) => {
+	handler: async (ctx, { description, endTime, hasUnlockRights, hasStartRights }) => {
 		const user = await ctx.auth.getUserIdentity() // manager auth assumed via custom OIDC
 		if (!user) throw new Error("Not authenticated")
 
@@ -57,6 +59,8 @@ export const add = mutation({
 			linkShort,
 			description,
 			endTime,
+			hasUnlockRights,
+			hasStartRights,
 		})
 
 		return linkShort
@@ -70,8 +74,13 @@ export const edit = mutation({
 		description: v.optional(v.string()),
 		endTime: v.optional(v.number()),
 		expired: v.optional(v.boolean()),
+		hasUnlockRights: v.optional(v.boolean()),
+		hasStartRights: v.optional(v.boolean()),
 	},
-	handler: async (ctx, { linkShort, description, endTime, expired }) => {
+	handler: async (
+		ctx,
+		{ linkShort, description, endTime, expired, hasUnlockRights, hasStartRights },
+	) => {
 		const user = await ctx.auth.getUserIdentity() // manager auth assumed via custom OIDC
 		if (!user) throw new Error("Not authenticated")
 
@@ -89,10 +98,14 @@ export const edit = mutation({
 			description?: string
 			endTime?: number
 			isExpired?: boolean
+			hasUnlockRights?: boolean
+			hasStartRights?: boolean
 		} = {}
 		if (description !== undefined) patch["description"] = description
 		if (endTime !== undefined) patch["endTime"] = endTime
 		if (expired !== undefined) patch["isExpired"] = expired
+		if (hasUnlockRights !== undefined) patch["hasUnlockRights"] = hasUnlockRights
+		if (hasStartRights !== undefined) patch["hasStartRights"] = hasStartRights
 
 		await ctx.db.patch(link._id, patch)
 	},

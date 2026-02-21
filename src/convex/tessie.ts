@@ -1,5 +1,6 @@
 import { internalAction, internalMutation } from "$convex/server"
 import { z } from "zod"
+import { v } from "convex/values"
 
 import { carValidator } from "./schema"
 import { type Infer } from "convex/values"
@@ -8,6 +9,8 @@ import { internal } from "$convex/api"
 /* Tessie Zod */
 const TessieStateSchema = z.object({
 	vin: z.string(),
+	state: z.string(),
+	display_name: z.string(),
 	drive_state: z.object({
 		latitude: z.number(),
 		longitude: z.number(),
@@ -34,6 +37,9 @@ const TessieStateSchema = z.object({
 			.nullable()
 			.transform((val) => val ?? undefined),
 	}),
+	vehicle_state: z.object({
+		locked: z.boolean(),
+	}),
 	charge_state: z.object({
 		battery_level: z.number(),
 	}),
@@ -41,7 +47,6 @@ const TessieStateSchema = z.object({
 		inside_temp: z.number(),
 		outside_temp: z.number(),
 	}),
-	display_name: z.string(),
 })
 
 export const setCarData = internalMutation({
@@ -91,6 +96,8 @@ export const updateCarData = internalAction({
 
 		const dbData: Infer<typeof carValidator> = {
 			vin: data.vin,
+			state: data.state,
+			locked: data.vehicle_state.locked,
 			carName: data.display_name,
 			lastUpdate: Date.now(),
 			gpsLatitude: data.drive_state.latitude,
@@ -110,5 +117,28 @@ export const updateCarData = internalAction({
 		await ctx.runMutation(internal.tessie.setCarData, {
 			data: dbData,
 		})
+	},
+})
+
+export const executeOnCar = internalAction({
+	args: {
+		command: v.union(v.literal("lock"), v.literal("unlock"), v.literal("remote_start")),
+	},
+	handler: async (ctx, { command }) => {
+		const { TESLA_VIN, TESSIE_ACCESS_TOKEN } = process.env
+
+		if (!TESLA_VIN || !TESSIE_ACCESS_TOKEN) {
+			throw new Error("Missing VIN or Tessie token")
+		}
+
+		const res = await fetch(`https://api.tessie.com/${TESLA_VIN}/command/${command}`, {
+			headers: {
+				Authorization: `Bearer ${TESSIE_ACCESS_TOKEN}`,
+			},
+		})
+
+		if (!res.ok) {
+			throw new Error(`Tessie API error: ${res.status}`)
+		}
 	},
 })

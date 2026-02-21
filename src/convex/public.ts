@@ -38,12 +38,17 @@ export const getCarData = query({
 
 		// only expose certain fields
 		const retData = {
+			hasUnlockRights: link.hasUnlockRights,
+			hasStartRights: link.hasStartRights,
+
 			lastUpdate: carRow.lastUpdate,
 			latitude: carRow.gpsLatitude,
 			longitude: carRow.gpsLongitude,
 			heading: carRow.gpsHeading,
 			speed: carRow.speed,
 			carName: carRow.carName,
+			state: carRow.state,
+			locked: carRow.locked,
 			activeRouteDestination: carRow.activeRouteDestination,
 			activeRouteLatitude: carRow.activeRouteLatitude,
 			activeRouteLongitude: carRow.activeRouteLongitude,
@@ -97,5 +102,33 @@ export const touchLink = mutation({
 
 		// schedule car data update (assuming scheduled mutation exists)
 		await ctx.scheduler.runAfter(0, internal.tessie.updateCarData, {})
+	},
+})
+
+export const carAction = mutation({
+	args: {
+		short: v.string(),
+		action: v.union(v.literal("lock"), v.literal("unlock"), v.literal("remote_start")),
+	},
+	handler: async (ctx, { short, action }) => {
+		// verify link and permissions
+		const link = await ctx.db
+			.query("links")
+			.withIndex("by_linkShort", (q) => q.eq("linkShort", short))
+			.unique()
+
+		if (!link || link.isExpired || link.endTime < Date.now()) {
+			throw new Error("Link invalid or expired")
+		}
+
+		if (
+			(action === "lock" && !link.hasUnlockRights) ||
+			(action === "unlock" && !link.hasUnlockRights) ||
+			(action === "remote_start" && !link.hasStartRights)
+		) {
+			throw new Error("Insufficient permissions for this action")
+		}
+
+		await ctx.scheduler.runAfter(0, internal.tessie.executeOnCar, { command: action })
 	},
 })
