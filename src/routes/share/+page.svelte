@@ -28,19 +28,17 @@
 		if (!mapInstance || !carData.data) return
 		const carLatLng: [number, number] = [carData.data.latitude, carData.data.longitude]
 
+		const boundsList = [carLatLng]
+		if (userLocation) boundsList.push(userLocation)
 		if (hasDestination) {
-			const destLatLng: [number, number] = [
-				carData.data.activeRouteLatitude!,
-				carData.data.activeRouteLongitude!,
-			]
-			const bounds = L.latLngBounds([
-				carLatLng,
-				destLatLng,
-				...(userLocation ? [userLocation] : []),
-			]).pad(0.2) // Add some padding around the bounds
+			boundsList.push([carData.data.activeRouteLatitude!, carData.data.activeRouteLongitude!])
+		}
+
+		if (boundsList.length > 1) {
+			const bounds = L.latLngBounds(boundsList).pad(0.2) // Add some padding around the bounds
 			mapInstance.fitBounds(bounds, { padding: [50, 50] })
 		} else {
-			mapInstance.setView(carLatLng)
+			mapInstance.setView(boundsList[0])
 		}
 	})
 
