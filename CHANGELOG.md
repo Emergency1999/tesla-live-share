@@ -1,3 +1,9 @@
+## [1.9.1](https://github.com/Emergency1999/tesla-live-share/compare/v1.9.0...v1.9.1) (2026-02-21)
+
+### Bug Fixes
+
+- fixed focus bound ([ccc56ab](https://github.com/Emergency1999/tesla-live-share/commit/ccc56ab83a97c99e76dec2fca345b1d7d9fe9da4))
+
 # [1.9.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.8.2...v1.9.0) (2026-02-21)
 
 ### Features
