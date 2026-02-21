@@ -1,3 +1,11 @@
+# [1.9.0](https://github.com/Emergency1999/tesla-live-share/compare/v1.8.2...v1.9.0) (2026-02-21)
+
+### Features
+
+- added current location to map ([37a973b](https://github.com/Emergency1999/tesla-live-share/commit/37a973b6c0b3316a8d92d34188fe0a020594ff82))
+- added current time/date at open on link creation, added link edit ([8bfa5b6](https://github.com/Emergency1999/tesla-live-share/commit/8bfa5b6c92890df267852c5233d8684f2e383068))
+- added unlock and remote start functionality ([9b5d2ee](https://github.com/Emergency1999/tesla-live-share/commit/9b5d2eefab95a769e3af76c8f25905c6863ead5a))
+
 ## [1.8.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.8.1...v1.8.2) (2026-02-16)
 
 ### Bug Fixes
