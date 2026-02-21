@@ -63,6 +63,41 @@ export const add = mutation({
 	},
 })
 
+/* MANAGER: edit link */
+export const edit = mutation({
+	args: {
+		linkShort: v.string(),
+		description: v.optional(v.string()),
+		endTime: v.optional(v.number()),
+		expired: v.optional(v.boolean()),
+	},
+	handler: async (ctx, { linkShort, description, endTime, expired }) => {
+		const user = await ctx.auth.getUserIdentity() // manager auth assumed via custom OIDC
+		if (!user) throw new Error("Not authenticated")
+
+		const link = await ctx.db
+			.query("links")
+			.withIndex("by_linkShort", (q) => q.eq("linkShort", linkShort))
+			.unique()
+
+		if (!link) throw new Error("Link not found")
+
+		// adjust endTime to next full minute
+		if (endTime) endTime = Math.ceil(endTime / 60000) * 60000
+
+		const patch: {
+			description?: string
+			endTime?: number
+			isExpired?: boolean
+		} = {}
+		if (description !== undefined) patch["description"] = description
+		if (endTime !== undefined) patch["endTime"] = endTime
+		if (expired !== undefined) patch["isExpired"] = expired
+
+		await ctx.db.patch(link._id, patch)
+	},
+})
+
 /* MANAGER: delete link */
 export const del = mutation({
 	args: {

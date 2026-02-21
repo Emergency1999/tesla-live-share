@@ -13,23 +13,37 @@
 		minutesPlaceholder?: string
 	}>()
 
+	function formatDateTimeLocal(date: SvelteDate) {
+		const pad = (value: number) => value.toString().padStart(2, "0")
+		return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`
+	}
+
+	function getCurrentDateTime() {
+		return formatDateTimeLocal(new SvelteDate())
+	}
+
+	function calculateMinutesUntil(dateTime: string) {
+		if (!dateTime) {
+			return null
+		}
+
+		const now = new SvelteDate()
+		const selected = new SvelteDate(dateTime)
+		const diffMs = selected.getTime() - now.getTime()
+		const diffMinutes = Math.ceil(diffMs / 60000)
+		return Math.max(1, diffMinutes)
+	}
+
+	const initialDateTime = getCurrentDateTime()
+
 	let inputMode = $state<"minutes" | "datetime">("minutes")
-	let selectedDateTime = $state("")
-	let calculatedMinutes = $state<number | null>(null)
+	let selectedDateTime = $state(initialDateTime)
+	let calculatedMinutes = $state<number | null>(calculateMinutesUntil(initialDateTime))
 
 	function handleDateTimeChange(event: Event) {
 		const target = event.target as HTMLInputElement
 		selectedDateTime = target.value
-
-		if (selectedDateTime) {
-			const now = new SvelteDate()
-			const selected = new SvelteDate(selectedDateTime)
-			const diffMs = selected.getTime() - now.getTime()
-			const diffMinutes = Math.ceil(diffMs / 60000)
-			calculatedMinutes = Math.max(1, diffMinutes)
-		} else {
-			calculatedMinutes = null
-		}
+		calculatedMinutes = calculateMinutesUntil(selectedDateTime)
 	}
 
 	function handleFormSubmit(event: SubmitEvent) {
@@ -44,9 +58,7 @@
 	}
 
 	function getMinDateTime() {
-		const now = new SvelteDate()
-		now.setMinutes(now.getMinutes() + 1)
-		return now.toISOString().slice(0, 16)
+		return getCurrentDateTime()
 	}
 </script>
 
@@ -98,6 +110,7 @@
 				<input
 					type="datetime-local"
 					min={getMinDateTime()}
+					value={selectedDateTime}
 					oninput={handleDateTimeChange}
 					required
 					class="rounded-lg border border-slate-600 bg-slate-700 px-4 py-2 text-white placeholder-slate-400 [color-scheme:dark] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"

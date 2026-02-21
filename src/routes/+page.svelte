@@ -53,6 +53,15 @@
 		})
 	}
 
+	const handleEditLink = async (linkShort: string, description: string, endTime: number) => {
+		await client.mutation(api.links.edit, {
+			linkShort,
+			description,
+			endTime,
+			expired: endTime <= Date.now(),
+		})
+	}
+
 	onMount(() => {
 		const interval = setInterval(() => {
 			now = Date.now()
@@ -87,7 +96,13 @@
 				{:else if links.data && links.data.length > 0}
 					<div class="space-y-4">
 						{#each links.data as link (link._id)}
-							<LinkCard {link} {now} onCopy={handleCopyLink} onDelete={handleDeleteLink} />
+							<LinkCard
+								{link}
+								{now}
+								onCopy={handleCopyLink}
+								onDelete={handleDeleteLink}
+								onEdit={handleEditLink}
+							/>
 						{/each}
 					</div>
 				{:else}
