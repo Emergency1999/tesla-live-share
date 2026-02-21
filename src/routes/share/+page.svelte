@@ -16,6 +16,7 @@
 	const carData = useQuery(api.public.getCarData, { short })
 
 	let mapInstance: L.Map | undefined = $state(undefined)
+	let userLocation: [number, number] | undefined = $state(undefined)
 
 	const hasDestination = $derived(
 		carData.data?.activeRouteLatitude !== undefined &&
@@ -32,7 +33,11 @@
 				carData.data.activeRouteLatitude!,
 				carData.data.activeRouteLongitude!,
 			]
-			const bounds = L.latLngBounds([carLatLng, destLatLng])
+			const bounds = L.latLngBounds([
+				carLatLng,
+				destLatLng,
+				...(userLocation ? [userLocation] : []),
+			]).pad(0.2) // Add some padding around the bounds
 			mapInstance.fitBounds(bounds, { padding: [50, 50] })
 		} else {
 			mapInstance.setView(carLatLng)
@@ -42,13 +47,33 @@
 	onMount(() => {
 		client.mutation(api.public.touchLink, { short })
 
+		let locationWatchId: number | undefined = undefined
+		if (typeof navigator !== "undefined" && "geolocation" in navigator) {
+			locationWatchId = navigator.geolocation.watchPosition(
+				(position) => {
+					userLocation = [position.coords.latitude, position.coords.longitude]
+				},
+				() => {},
+				{
+					enableHighAccuracy: true,
+					maximumAge: 30000,
+					timeout: 10000,
+				},
+			)
+		}
+
 		const interval = setInterval(
 			() => {
 				client.mutation(api.public.touchLink, { short })
 			},
 			dev ? 300000 : 10000,
 		)
-		return () => clearInterval(interval)
+		return () => {
+			clearInterval(interval)
+			if (locationWatchId !== undefined && "geolocation" in navigator) {
+				navigator.geolocation.clearWatch(locationWatchId)
+			}
+		}
 	})
 
 	let head = $derived.by(() => {
@@ -126,6 +151,20 @@
 						></div>
 					</DivIcon>
 				</Marker>
+
+				{#if userLocation}
+					<Marker latLng={userLocation}>
+						<DivIcon
+							options={{
+								className: "user-marker",
+								iconSize: [16, 16],
+								iconAnchor: [8, 8],
+							}}
+						>
+							<div class="user-dot"></div>
+						</DivIcon>
+					</Marker>
+				{/if}
 
 				<!-- Destination Marker (if active route) -->
 				{#if hasDestination}
@@ -259,5 +298,19 @@
 		transform: rotate(-45deg);
 		border: 3px solid white;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+	}
+
+	:global(.user-marker) {
+		background: transparent !important;
+		border: none !important;
+	}
+
+	:global(.user-dot) {
+		width: 16px;
+		height: 16px;
+		background: #22c55e;
+		border: 2px solid white;
+		border-radius: 9999px;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 	}
 </style>
