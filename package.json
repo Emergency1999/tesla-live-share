@@ -56,9 +56,9 @@
 		"vitest-browser-svelte": "^2.2.1"
 	},
 	"dependencies": {
-		"@convex-dev/better-auth": "0.10.10",
-		"@mmailaender/convex-better-auth-svelte": "0.5.0",
-		"better-auth": "1.4.9",
+		"@convex-dev/better-auth": "^0.10.13",
+		"@mmailaender/convex-better-auth-svelte": "^0.5.3",
+		"better-auth": "^1.7.6",
 		"convex": "^1.46.0",
 		"convex-svelte": "^0.0.12",
 		"dayjs": "^1.11.23",
