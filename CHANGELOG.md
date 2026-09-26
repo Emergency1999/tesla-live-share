@@ -1,3 +1,9 @@
+## [1.9.2](https://github.com/Emergency1999/tesla-live-share/compare/v1.9.1...v1.9.2) (2026-09-26)
+
+### Bug Fixes
+
+- updated packages ([23aa03c](https://github.com/Emergency1999/tesla-live-share/commit/23aa03c9531e477de5d0d6c0220985554d66dd81))
+
 ## [1.9.1](https://github.com/Emergency1999/tesla-live-share/compare/v1.9.0...v1.9.1) (2026-02-21)
 
 ### Bug Fixes
